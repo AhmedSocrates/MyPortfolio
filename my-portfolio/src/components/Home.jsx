@@ -1,397 +1,264 @@
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
 
-// ─── Horizontal Story Panel ───────────────────────────────────────────────────
+// ─── Design tokens ────────────────────────────────────────────────────────────
+const BG = "#020817";
+const BG2 = "#0a0f1e";
+
 const storyChapters = [
   {
     id: "origin",
-    label: "Chapter 01 — Origin",
-    headline: "Born From\nCuriosity.",
-    body: "It started with a question: what if machines could think? Not just calculate — but understand. That single obsession sent me down a rabbit hole of code, mathematics, and systems too beautiful to ignore.",
-    accent: "#3b82f6",
+    label: "Chapter 01 — The Pivot",
+    headline: "From Circuits\nto Code.",
+    body: "My engineering journey began in Sudan, studying Electrical Engineering. When war forced a change of plans, I didn't stop building—I pivoted. I relocated to Malaysia, joined UTM, and channeled my engineering mindset into Software Development.",
+    accent: "#f59e0b", // Amber/Gold (Energy/Resilience)
     icon: "⚡",
   },
   {
-    id: "fullstack",
-    label: "Chapter 02 — The Builder",
-    headline: "Frontend.\nBackend.\nEverything.",
-    body: "I learned to build the full stack — from pixel-perfect React UIs to distributed APIs, cloud infrastructure, and databases. If it could be engineered, I engineered it. Shipped to production, zero apologies.",
-    accent: "#a855f7",
-    icon: "🏗️",
+    id: "web",
+    label: "Chapter 02 — The Web",
+    headline: "Architecting\nthe Web.",
+    body: "I build responsive, high-performance web platforms. I've successfully delivered multiple custom websites for diverse clients across the UAE, focusing on scalable code and user-centric design that drives real business value.",
+    accent: "#3b82f6", // Blue
+    icon: "🌐",
   },
   {
-    id: "ai",
-    label: "Chapter 03 — The Intelligence",
-    headline: "Teaching\nMachines to\nSee.",
-    body: "Neural networks. Transformers. Diffusion models. I stopped using AI as a tool and started building it from scratch — training models, designing architectures, deploying intelligent systems that actually work in the real world.",
-    accent: "#10b981",
-    icon: "🧠",
+    id: "mobile",
+    label: "Chapter 03 — The Apps",
+    headline: "Production\nReady Apps.",
+    body: "Web is only half the story. I specialize in building seamless, cross-platform mobile experiences using Flutter. From state management to backend integration, I engineer full-stack applications and ship them to production.",
+    accent: "#10b981", // Emerald/Green
+    icon: "📱",
   },
   {
-    id: "quantum",
-    label: "Chapter 04 — The Frontier",
-    headline: "Quantum\nIs the\nNext Gate.",
-    body: "Classical bits are a ceiling. I'm reaching for qubits. My next chapter: Quantum Machine Learning — where superposition meets gradient descent, and the impossible becomes computable. The future runs on quantum.",
-    accent: "#f59e0b",
-    icon: "⚛️",
-  },
-  {
-    id: "mission",
-    label: "Chapter 05 — The Mission",
-    headline: "Build What\nDoesn't\nExist Yet.",
-    body: "I am a Full-Stack developer, AI researcher, and soon — a quantum computing engineer. I don't chase trends. I build the infrastructure of tomorrow, one breakthrough at a time.",
-    accent: "#ec4899",
+    id: "future",
+    label: "Chapter 04 — The Builder",
+    headline: "Always\nShipping.",
+    body: "Currently in my third year of Software Engineering at UTM. I combine rigorous academic computer science with real-world freelancing experience. I'm not just a student; I'm an engineer who pushes code to production.",
+    accent: "#a855f7", // Purple
     icon: "🚀",
-  },
+  }
 ];
 
-// ─── Particle Background ──────────────────────────────────────────────────────
+// ─── Global styles injected once ─────────────────────────────────────────────
+const GLOBAL_CSS = `
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: ${BG}; overflow-x: hidden; }
+  ::-webkit-scrollbar { width: 5px; background: ${BG}; }
+  ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+`;
+
+// ─── Particles ────────────────────────────────────────────────────────────────
 function Particles() {
-  const dots = Array.from({ length: 60 }, (_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    size: Math.random() * 2 + 0.5,
-    duration: Math.random() * 6 + 4,
-    delay: Math.random() * 4,
-  }));
+  const dots = useMemo(
+    () =>
+      Array.from({ length: 55 }, (_, i) => ({
+        id: i,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        size: Math.random() * 2.5 + 0.5,
+        duration: Math.random() * 7 + 4,
+        delay: Math.random() * 5,
+        color: ["#3b82f6", "#a855f7", "#10b981", "#f59e0b"][Math.floor(Math.random() * 4)],
+      })),
+    []
+  );
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        overflow: "hidden",
+        pointerEvents: "none",
+        zIndex: 0,
+      }}
+    >
       {dots.map((d) => (
         <motion.div
           key={d.id}
-          className="absolute rounded-full bg-blue-400"
           style={{
+            position: "absolute",
             left: `${d.x}%`,
             top: `${d.y}%`,
             width: d.size,
             height: d.size,
-            opacity: 0.15,
+            borderRadius: "50%",
+            background: d.color,
+            opacity: 0.12,
           }}
-          animate={{ opacity: [0.05, 0.3, 0.05], scale: [1, 1.5, 1] }}
-          transition={{ duration: d.duration, repeat: Infinity, delay: d.delay }}
+          animate={{ opacity: [0.04, 0.28, 0.04], scale: [1, 1.8, 1] }}
+          transition={{ duration: d.duration, repeat: Infinity, delay: d.delay, ease: "easeInOut" }}
         />
       ))}
     </div>
   );
 }
 
-// ─── Story Chapter Card ───────────────────────────────────────────────────────
+// ─── Chapter Card ─────────────────────────────────────────────────────────────
 function ChapterCard({ chapter }) {
   return (
     <div
-      className="flex-shrink-0 w-[85vw] md:w-[600px] h-full flex flex-col justify-center px-12 py-16 relative"
-      style={{ borderRight: "1px solid rgba(255,255,255,0.05)" }}
+      style={{
+        flexShrink: 0,
+        width: 600,
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        padding: "64px 56px",
+        position: "relative",
+        borderRight: "1px solid rgba(255,255,255,0.04)",
+      }}
     >
-      {/* Top accent line */}
-      <div
-        className="w-16 h-[3px] mb-10 rounded-full"
-        style={{ background: chapter.accent }}
-      />
-
-      <span
-        className="font-mono text-xs tracking-[0.25em] uppercase mb-6"
-        style={{ color: chapter.accent, opacity: 0.8 }}
-      >
+      <div style={{ width: 56, height: 3, borderRadius: 9999, background: chapter.accent, marginBottom: 32 }} />
+      <span style={{ fontFamily: "monospace", fontSize: 11, letterSpacing: "0.25em", textTransform: "uppercase", color: chapter.accent, opacity: 0.85, marginBottom: 20, display: "block" }}>
         {chapter.label}
       </span>
-
-      <h2
-        className="text-5xl md:text-6xl font-black text-white leading-[1.05] mb-8 whitespace-pre-line"
-        style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}
-      >
+      <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 62, fontWeight: 900, color: "#ffffff", lineHeight: 1.05, letterSpacing: "-0.02em", whiteSpace: "pre-line", marginBottom: 28 }}>
         {chapter.headline}
       </h2>
-
-      <p className="text-slate-400 text-base md:text-lg leading-relaxed max-w-md">
+      <p style={{ color: "#94a3b8", fontSize: 17, lineHeight: 1.75, maxWidth: 440, fontFamily: "Georgia, serif" }}>
         {chapter.body}
       </p>
-
-      {/* Icon watermark */}
-      <div
-        className="absolute bottom-12 right-12 text-7xl"
-        style={{ opacity: 0.08 }}
-      >
+      <div style={{ position: "absolute", bottom: 48, right: 48, fontSize: 96, opacity: 0.06, pointerEvents: "none", userSelect: "none" }}>
         {chapter.icon}
       </div>
     </div>
   );
 }
 
-// ─── Horizontal Scroll Section ────────────────────────────────────────────────
+// ─── Horizontal Story ─────────────────────────────────────────────────────────
+const CARD_WIDTH = 600;
+
 function HorizontalStory() {
   const trackRef = useRef(null);
+  const totalCards = storyChapters.length;
+
   const { scrollYProgress } = useScroll({
     target: trackRef,
     offset: ["start start", "end end"],
   });
 
-  // Map scroll to horizontal translation
-  const totalWidth = storyChapters.length * 600; // approx px per card
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", `-${(storyChapters.length - 1) * 100 / storyChapters.length}%`]);
-  const smoothX = useSpring(x, { stiffness: 80, damping: 20 });
-
-  // Progress bar
+  // Translate based on the number of cards
+  const xPx = useTransform(scrollYProgress, [0, 1], [0, -(totalCards - 1) * CARD_WIDTH]);
+  const smoothX = useSpring(xPx, { stiffness: 70, damping: 22, restDelta: 0.001 });
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
   return (
-    /* Sticky container — height controls how much scroll = how far we travel */
-    <div
-      ref={trackRef}
-      style={{ height: `${storyChapters.length * 100}vh` }}
-      className="relative"
-    >
-      <div className="sticky top-0 h-screen overflow-hidden flex flex-col">
+    <div ref={trackRef} style={{ height: `${totalCards * 100}vh`, position: "relative" }}>
+      <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", display: "flex", flexDirection: "column", background: BG2 }}>
+        
         {/* Progress bar */}
+        <motion.div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, zIndex: 50, originX: 0, scaleX, background: "linear-gradient(90deg, #3b82f6 0%, #a855f7 33%, #10b981 66%, #f59e0b 100%)" }} />
+
+        {/* Sliding track - FIXED CENTERING HERE */}
         <motion.div
-          className="absolute top-0 left-0 right-0 h-[2px] z-50 origin-left"
           style={{
-            scaleX,
-            background: "linear-gradient(90deg, #3b82f6, #a855f7, #10b981, #f59e0b, #ec4899)",
+            display: "flex",
+            height: "100%",
+            width: "max-content", // Allows the track to be as wide as it needs
+            paddingLeft: `calc(50vw - ${CARD_WIDTH / 2}px)`, // Pushes the first card to the exact center
+            paddingRight: `calc(50vw - ${CARD_WIDTH / 2}px)`, // Ensures the last card stops in the center
+            x: smoothX,
+            willChange: "transform",
           }}
-        />
-
-        {/* Chapter counter */}
-        <motion.div
-          className="absolute top-8 right-8 z-50 font-mono text-xs text-slate-500 tracking-widest"
-        >
-          {storyChapters.map((_, i) => (
-            <motion.span
-              key={i}
-              style={{
-                opacity: useTransform(
-                  scrollYProgress,
-                  [i / storyChapters.length - 0.05, i / storyChapters.length + 0.05],
-                  [0.2, 1]
-                ),
-              }}
-            >
-              {i < storyChapters.length - 1 ? `0${i + 1} · ` : `0${i + 1}`}
-            </motion.span>
-          ))}
-        </motion.div>
-
-        {/* Horizontal track */}
-        <motion.div
-          className="flex h-full"
-          style={{ x: smoothX, width: `${storyChapters.length * 100}vw` }}
         >
           {storyChapters.map((chapter) => (
             <ChapterCard key={chapter.id} chapter={chapter} />
           ))}
         </motion.div>
-
-        {/* Scroll hint */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 text-slate-600 text-xs tracking-widest uppercase font-mono">
-          <motion.span
-            animate={{ x: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            ←
-          </motion.span>
-          scroll to navigate
-          <motion.span
-            animate={{ x: [0, -8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            →
-          </motion.span>
-        </div>
+        
       </div>
     </div>
   );
 }
 
-// ─── Hero Section ─────────────────────────────────────────────────────────────
+// ─── Hero ─────────────────────────────────────────────────────────────────────
 function Hero() {
-  const containerVariants = {
+  const container = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.25, delayChildren: 0.3 },
-    },
+    visible: { opacity: 1, transition: { staggerChildren: 0.22, delayChildren: 0.25 } },
   };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } },
+  const item = {
+    hidden: { opacity: 0, y: 28 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.85, ease: [0.22, 1, 0.36, 1] } },
   };
 
   return (
-    <section className="h-screen w-full flex flex-col items-center justify-center snap-start bg-slate-950 relative overflow-hidden">
+    <section style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: BG, position: "relative", overflow: "hidden" }}>
       <Particles />
 
-      {/* Ambient glow blobs */}
-      <motion.div
-        animate={{ scale: [1, 1.3, 1], opacity: [0.08, 0.18, 0.08] }}
-        transition={{ duration: 10, repeat: Infinity }}
-        className="absolute w-[700px] h-[700px] rounded-full -z-10 blur-[160px]"
-        style={{ background: "radial-gradient(circle, #3b82f6 0%, #a855f7 60%, transparent 100%)" }}
-      />
-      <motion.div
-        animate={{ scale: [1.2, 1, 1.2], opacity: [0.06, 0.14, 0.06] }}
-        transition={{ duration: 12, repeat: Infinity, delay: 3 }}
-        className="absolute w-[400px] h-[400px] rounded-full -z-10 blur-[100px] translate-x-64 translate-y-32"
-        style={{ background: "radial-gradient(circle, #10b981 0%, transparent 70%)" }}
-      />
+      {/* Glow blobs */}
+      <motion.div animate={{ scale: [1, 1.35, 1], opacity: [0.07, 0.18, 0.07] }} transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }} style={{ position: "absolute", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, #3b82f6 0%, #a855f7 55%, transparent 100%)", filter: "blur(130px)", zIndex: 0, pointerEvents: "none" }} />
+      <motion.div animate={{ scale: [1.2, 1, 1.2], opacity: [0.05, 0.13, 0.05] }} transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 4 }} style={{ position: "absolute", width: 450, height: 450, borderRadius: "50%", background: "radial-gradient(circle, #10b981 0%, transparent 70%)", filter: "blur(100px)", zIndex: 0, pointerEvents: "none", right: "5%", bottom: "10%" }} />
 
-      {/* Scanline texture overlay */}
-      <div
-        className="absolute inset-0 -z-10 pointer-events-none"
-        style={{
-          backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.012) 2px, rgba(255,255,255,0.012) 4px)",
-        }}
-      />
-
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="text-center px-6 max-w-5xl"
-      >
-        <motion.span
-          variants={itemVariants}
-          className="font-mono text-blue-400 text-xs tracking-[0.35em] uppercase mb-6 block"
-        >
-          ⟨ Initializing Portfolio v∞ ⟩
+      <motion.div variants={container} initial="hidden" animate="visible" style={{ position: "relative", zIndex: 1, textAlign: "center", padding: "0 24px", maxWidth: 900, width: "100%", margin: "0 auto" }}>
+        <motion.span variants={item} style={{ fontFamily: "monospace", fontSize: 11, letterSpacing: "0.35em", textTransform: "uppercase", color: "#60a5fa", display: "block", marginBottom: 24 }}>
+          ⟨ Ahmed Mohamed • Software Engineer ⟩
         </motion.span>
 
-        <motion.h1
-          variants={itemVariants}
-          className="text-7xl md:text-9xl font-black text-white leading-none mb-2"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.03em" }}
-        >
-          Building{" "}
-          <span
-            className="text-transparent bg-clip-text"
-            style={{
-              backgroundImage: "linear-gradient(135deg, #3b82f6 0%, #a855f7 40%, #10b981 80%)",
-            }}
-          >
-            Futures.
+        <motion.h1 variants={item} style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(56px, 9vw, 110px)", fontWeight: 900, color: "#ffffff", lineHeight: 1, letterSpacing: "-0.03em", marginBottom: 8 }}>
+          Building Without{" "}
+          <span style={{ WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", backgroundImage: "linear-gradient(135deg, #3b82f6 0%, #a855f7 45%, #10b981 85%)" }}>
+            Borders.
           </span>
         </motion.h1>
 
-        <motion.p
-          variants={itemVariants}
-          className="mt-8 text-slate-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed"
-          style={{ fontFamily: "Georgia, serif" }}
-        >
-          Full-Stack Engineer · AI Researcher · Quantum ML Aspirant.{" "}
-          <span className="text-slate-300">
-            I build intelligent systems today, and train myself for the quantum frontier of tomorrow.
+        <motion.p variants={item} style={{ color: "#94a3b8", fontSize: "clamp(15px, 1.8vw, 19px)", maxWidth: 580, margin: "28px auto 0", lineHeight: 1.75, fontFamily: "Georgia, serif" }}>
+          Software Engineering Student @ UTM · Flutter Developer · Web Architect.{" "}
+          <span style={{ color: "#cbd5e1" }}>
+            I engineer resilient web platforms for UAE clients and ship production-ready mobile apps from Malaysia.
           </span>
         </motion.p>
-
-        <motion.div variants={itemVariants} className="mt-12 flex gap-4 justify-center flex-wrap">
-          <button
-            className="px-8 py-3.5 font-bold rounded-full text-slate-950 text-sm tracking-wide transition-all hover:scale-105 active:scale-95"
-            style={{ background: "linear-gradient(135deg, #60a5fa, #a78bfa)" }}
-          >
-            View My Work
-          </button>
-          <button
-            className="px-8 py-3.5 font-bold rounded-full text-white text-sm tracking-wide border border-slate-700 hover:border-slate-500 hover:bg-slate-800/50 transition-all"
-          >
-            My Research ⚛️
-          </button>
-        </motion.div>
-      </motion.div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2.5, duration: 1 }}
-        className="absolute bottom-10 flex flex-col items-center gap-2"
-      >
-        <span className="text-slate-600 text-xs uppercase tracking-[0.3em] font-mono">
-          Scroll to read my story
-        </span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="w-[1px] h-10 bg-gradient-to-b from-blue-500 to-transparent"
-        />
       </motion.div>
     </section>
   );
 }
 
-// ─── Final CTA Section ────────────────────────────────────────────────────────
+// ─── Final CTA ────────────────────────────────────────────────────────────────
 function FinalCTA() {
   return (
-    <section className="h-screen w-full flex flex-col items-center justify-center bg-slate-950 relative overflow-hidden">
-      <div
-        className="absolute inset-0"
-        style={{
-          background: "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(59,130,246,0.08) 0%, transparent 70%)",
-        }}
-      />
-
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-        viewport={{ once: true }}
-        className="text-center px-6"
-      >
-        <span className="font-mono text-xs text-emerald-400 tracking-[0.35em] uppercase mb-6 block">
-          ⟨ Transmission Complete ⟩
+    <section style={{ height: "100vh", width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: BG, position: "relative", overflow: "hidden" }}>
+      <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }} viewport={{ once: true }} style={{ textAlign: "center", padding: "0 24px", position: "relative", zIndex: 1 }}>
+        
+        <span style={{ fontFamily: "monospace", fontSize: 11, color: "#34d399", letterSpacing: "0.35em", textTransform: "uppercase", display: "block", marginBottom: 24 }}>
+          ⟨ Ready for deployment ⟩
         </span>
 
-        <h2
-          className="text-6xl md:text-8xl font-black text-white mb-8"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.03em" }}
-        >
-          What Gets{" "}
-          <span
-            className="text-transparent bg-clip-text"
-            style={{
-              backgroundImage: "linear-gradient(135deg, #f59e0b, #ec4899)",
-            }}
-          >
-            Built Next?
+        <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(48px, 8vw, 96px)", fontWeight: 900, color: "#ffffff", lineHeight: 1, letterSpacing: "-0.03em", marginBottom: 28 }}>
+          Let's Build{" "}
+          <span style={{ WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", backgroundImage: "linear-gradient(135deg, #f59e0b, #ec4899)" }}>
+            Your Next App.
           </span>
         </h2>
 
-        <p className="text-slate-400 text-lg max-w-xl mx-auto mb-12 leading-relaxed">
-          A quantum-classical hybrid model? A production AI platform? Whatever the problem,
-          I build the solution. Let's make something impossible.
+        <p style={{ color: "#94a3b8", fontSize: 17, maxWidth: 480, margin: "0 auto 44px", lineHeight: 1.75, fontFamily: "Georgia, serif" }}>
+          Whether you need a high-performance Flutter mobile app, a scalable web platform, or an engineer who knows how to adapt and deliver—let's talk.
         </p>
 
-        <div className="flex gap-4 justify-center flex-wrap">
-          <button
-            className="px-10 py-4 font-bold rounded-full text-slate-950 text-sm tracking-wide transition-all hover:scale-105 active:scale-95"
-            style={{ background: "linear-gradient(135deg, #f59e0b, #ec4899)" }}
-          >
-            Get In Touch
-          </button>
-          <button className="px-10 py-4 font-bold rounded-full text-white text-sm tracking-wide border border-slate-700 hover:bg-slate-800/50 transition-all">
-            GitHub ↗
-          </button>
-        </div>
+        <button style={{ padding: "16px 40px", background: "linear-gradient(135deg, #f59e0b, #ec4899)", color: "#020817", fontWeight: 800, fontSize: 14, letterSpacing: "0.04em", border: "none", borderRadius: 9999, cursor: "pointer" }}>
+          Contact Me
+        </button>
       </motion.div>
     </section>
   );
 }
 
-// ─── Root Export ──────────────────────────────────────────────────────────────
+// ─── Root export ──────────────────────────────────────────────────────────────
+// ─── Root export ──────────────────────────────────────────────────────────────
 export default function Home() {
   return (
-    <main className="bg-slate-950" style={{ fontFamily: "system-ui, sans-serif" }}>
-      {/* Google Fonts */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&display=swap');
-        * { box-sizing: border-box; }
-        ::-webkit-scrollbar { width: 6px; background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-      `}</style>
-
-      <Hero />
-      <HorizontalStory />
-      <FinalCTA />
-    </main>
+    <>
+      <style>{GLOBAL_CSS}</style>
+      {/* ADDED: width: "100%" and overflowX: "hidden" to lock the width! */}
+      <div style={{ background: BG, fontFamily: "system-ui, sans-serif", width: "100%", overflowX: "hidden" }}>
+        <Hero />
+        <HorizontalStory />
+        <FinalCTA />
+      </div>
+    </>
   );
 }

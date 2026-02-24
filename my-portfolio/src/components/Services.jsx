@@ -1,61 +1,161 @@
 import { motion } from "framer-motion";
 
 const serviceData = [
-  { 
-    title: "Web & Mobile", 
-    desc: "Full-stack ecosystems built with React & React Native.", 
+  {
+    title: "Flutter Development",
+    desc: "Building seamless, high-performance, and production-ready cross-platform mobile apps.",
+    icon: "📱",
+    accent: "#38bdf8", // Flutter Sky Blue
+    special: true,
+  },
+  {
+    title: "Web Platforms",
+    desc: "Architecting responsive, scalable, and user-centric custom websites that drive real business value.",
     icon: "🌐",
-    glow: "shadow-blue-500/20" 
+    accent: "#10b981", // Emerald Green
   },
-  { 
-    title: "AI Research & Agents", 
-    desc: "ML/DL Research, custom AI Agents, and Bot Assistants.", 
-    icon: "🤖",
-    glow: "shadow-purple-500/40",
-    special: true // We'll give this extra flair
+  {
+    title: "Full-Stack Engineering",
+    desc: "End-to-end software solutions combining rigorous computer science fundamentals with real-world execution.",
+    icon: "⚙️",
+    accent: "#f59e0b", // Amber/Gold
   },
-  { 
-    title: "Data Intelligence", 
-    desc: "Deep-dive analysis and PowerBI storytelling.", 
-    icon: "📊",
-    glow: "shadow-emerald-500/20" 
-  }
 ];
 
 export default function Services() {
   return (
-    <section className="h-screen w-full flex flex-col items-center justify-center snap-start bg-slate-950 p-6">
-      <motion.h2 
+    <section
+      style={{
+        minHeight: "100vh", // Changed from fixed height so it doesn't break on short screens
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "#020817",
+        padding: "80px 24px", // Added top/bottom padding so it never touches the edges
+        boxSizing: "border-box",
+      }}
+    >
+      <motion.h2
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        className="text-4xl font-bold text-white mb-12"
+        transition={{ duration: 0.6 }}
+        style={{
+          fontFamily: "'Playfair Display', Georgia, serif",
+          fontSize: "clamp(28px, 4vw, 48px)",
+          fontWeight: 900,
+          color: "#ffffff",
+          marginBottom: 56,
+          letterSpacing: "-0.02em",
+          textAlign: "center",
+        }}
       >
         My Services
       </motion.h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full">
+      {/* CHANGED TO FLEXBOX FOR PERFECT CENTERING */}
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: 28,
+          maxWidth: 1100,
+          width: "100%",
+        }}
+      >
         {serviceData.map((service, index) => (
-          <motion.div 
+          <motion.div
             key={index}
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             whileHover={{ y: -10 }}
-            transition={{ delay: index * 0.1 }}
-            className={`relative p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl ${service.glow}`}
+            transition={{ delay: index * 0.1, duration: 0.5 }}
+            style={{
+              flex: "1 1 300px", // Allows cards to grow and shrink beautifully
+              maxWidth: 340, // Prevents them from stretching too wide
+              position: "relative",
+              padding: 36,
+              borderRadius: 24,
+              background: "#0f172a",
+              border: "1px solid #1e293b",
+              boxShadow: `0 8px 40px rgba(0,0,0,0.4)`,
+              overflow: "hidden",
+              boxSizing: "border-box",
+            }}
           >
-            {/* The "Neural" Pulse for AI service */}
+            {/* Glow accent top-left */}
+            <div
+              style={{
+                position: "absolute",
+                top: -40,
+                left: -40,
+                width: 120,
+                height: 120,
+                borderRadius: "50%",
+                background: service.accent,
+                filter: "blur(60px)",
+                opacity: 0.15,
+                pointerEvents: "none",
+              }}
+            />
+
+            {/* Neural pulse for special card */}
             {service.special && (
-              <motion.div 
-                animate={{ opacity: [0.1, 0.3, 0.1] }}
-                transition={{ repeat: Infinity, duration: 3 }}
-                className="absolute inset-0 bg-purple-500 rounded-3xl filter blur-xl"
+              <motion.div
+                animate={{ opacity: [0.06, 0.18, 0.06] }}
+                transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: service.accent,
+                  borderRadius: 24,
+                  filter: "blur(28px)",
+                  pointerEvents: "none",
+                }}
               />
             )}
 
-            <div className="relative z-10">
-              <div className="text-4xl mb-4">{service.icon}</div>
-              <h3 className="text-2xl font-bold text-white mb-3">{service.title}</h3>
-              <p className="text-slate-400 leading-relaxed">{service.desc}</p>
+            {/* Content */}
+            <div style={{ position: "relative", zIndex: 1 }}>
+              {/* Icon */}
+              <div style={{ fontSize: 40, marginBottom: 16 }}>{service.icon}</div>
+
+              {/* Accent bar */}
+              <div
+                style={{
+                  width: 32,
+                  height: 3,
+                  borderRadius: 9999,
+                  background: service.accent,
+                  marginBottom: 16,
+                }}
+              />
+
+              <h3
+                style={{
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontSize: 22,
+                  fontWeight: 900,
+                  color: "#ffffff",
+                  marginBottom: 12,
+                  letterSpacing: "-0.01em",
+                }}
+              >
+                {service.title}
+              </h3>
+
+              <p
+                style={{
+                  color: "#94a3b8",
+                  fontSize: 15,
+                  lineHeight: 1.7,
+                  fontFamily: "Georgia, serif",
+                }}
+              >
+                {service.desc}
+              </p>
             </div>
           </motion.div>
         ))}
