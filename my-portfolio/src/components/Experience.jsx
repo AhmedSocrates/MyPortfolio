@@ -1,4 +1,13 @@
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+
+const isMobile =
+    typeof window !== "undefined" &&
+    window.matchMedia("(max-width: 768px)").matches;
+
+import pureLineLogo from "../assets/images/Pureline-logo.png";
+import wasteCoLogo from "../assets/images/wasteco-logo.jpg";
+import etooPlayLogo from "../assets/images/EtooPlay-logo.png";
 
 const BG = "#020817";
 
@@ -11,7 +20,7 @@ const EXPERIENCES = [
         desc: "Architected and built a full-scale MERN e-commerce platform for a water solutions company in the UAE. The system handles product catalog, order management, and client portals — production-grade with real customers.",
         tech: ["MongoDB", "Express", "React", "Node.js", "REST APIs"],
         accent: "#38bdf8",
-        icon: "💧",
+        icon: pureLineLogo,
         current: true,
     },
     {
@@ -22,7 +31,7 @@ const EXPERIENCES = [
         desc: "Designed and delivered a polished company landing page for a waste management firm. Built with React and Vite for blazing-fast load times, Tailwind CSS for responsive design, and integrated a lead-capture form with Formspree.",
         tech: ["React", "TypeScript", "Vite", "Tailwind CSS"],
         accent: "#10b981",
-        icon: "♻️",
+        icon: wasteCoLogo,
         current: false,
     },
     {
@@ -33,7 +42,7 @@ const EXPERIENCES = [
         desc: "Analyzed and optimized the full system for a businesses search engine company. Lead a team of combined of front-end and back-end developers. Implemented new features and improved performance.",
         tech: ["Flutter", "Laravel", "MySQL", "REST APIs"],
         accent: "#f59e0b",
-        icon: "📱",
+        icon: etooPlayLogo,
         current: false,
     }
 ];
@@ -43,7 +52,7 @@ function ExperienceCard({ exp, index }) {
         <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.65, delay: index * 0.15, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: isMobile ? 0.35 : 0.65, delay: index * 0.15, ease: [0.22, 1, 0.36, 1] }}
             viewport={{ once: true, amount: 0.2 }}
             whileHover={{ x: 4 }}
             style={{
@@ -63,8 +72,18 @@ function ExperienceCard({ exp, index }) {
             <div style={{ padding: "32px 32px 28px", flex: 1 }}>
                 {/* Header */}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12, marginBottom: 16 }}>
-                    <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
-                        <span style={{ fontSize: 28 }}>{exp.icon}</span>
+                    <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+                        <img
+                            src={exp.icon}
+                            alt={`${exp.company} logo`}
+                            style={{
+                                width: 52,
+                                height: 52,
+                                borderRadius: 12,
+                                objectFit: "cover",
+                                border: `1px solid ${exp.accent}30`
+                            }}
+                        />
                         <div>
                             <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
                                 <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 22, fontWeight: 900, color: "#f1f5f9", letterSpacing: "-0.01em" }}>
@@ -125,7 +144,7 @@ export default function Experience() {
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: isMobile ? 0.45 : 0.7, ease: [0.22, 1, 0.36, 1] }}
                 viewport={{ once: true }}
                 style={{ textAlign: "center", marginBottom: 72, padding: "0 24px" }}
             >

@@ -1,6 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useCallback } from "react";
 
+const isMobile =
+    typeof window !== "undefined" &&
+    window.matchMedia("(max-width: 768px)").matches;
+
 // ─── Project image imports ────────────────────────────────────────────────────
 import signLinggoImg from "../assets/images/signlinggo-logo.jpg";
 import elevateXImg from "../assets/images/elevatex-logo.jpg";
@@ -306,7 +310,7 @@ function ProjectModal({ project, onClose }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: isMobile ? 0.15 : 0.25 }}
             onClick={onClose}
             style={{
                 position: "fixed", inset: 0, zIndex: 1000,
@@ -323,7 +327,7 @@ function ProjectModal({ project, onClose }) {
                 initial={{ opacity: 0, scale: 0.96, y: 16 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.97, y: 10 }}
-                transition={{ duration: 0.38, ease: EASE }}
+                transition={{ duration: isMobile ? 0.25 : 0.38, ease: EASE }}
                 onClick={(e) => e.stopPropagation()}
                 style={{
                     width: "100%",
@@ -469,7 +473,7 @@ function ProjectCard({ project, index, onOpen }) {
         <motion.div
             initial={{ opacity: 0, y: 28 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.52, delay: (index % 3) * 0.09, ease: EASE }}
+            transition={{ duration: isMobile ? 0.35 : 0.52, delay: (index % 3) * 0.09, ease: EASE }}
             viewport={{ once: true, amount: 0.12 }}
             onHoverStart={() => setHovered(true)}
             onHoverEnd={() => setHovered(false)}
@@ -623,7 +627,7 @@ export default function Projects() {
                 <motion.div
                     initial={{ opacity: 0, y: 24 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7, ease: EASE }}
+                    transition={{ duration: isMobile ? 0.45 : 0.7, ease: EASE }}
                     viewport={{ once: true }}
                     style={{ textAlign: "center", marginBottom: 72, padding: "0 24px" }}
                 >

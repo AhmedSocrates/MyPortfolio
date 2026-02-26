@@ -1,4 +1,9 @@
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+
+const isMobile =
+  typeof window !== "undefined" &&
+  window.matchMedia("(max-width: 768px)").matches;
 
 const serviceData = [
   {
@@ -53,7 +58,7 @@ export default function Services() {
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: isMobile ? 0.4 : 0.6 }}
         style={{
           fontFamily: "'Playfair Display', Georgia, serif",
           fontSize: "clamp(28px, 4vw, 48px)",
@@ -84,7 +89,7 @@ export default function Services() {
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             whileHover={{ y: -10 }}
-            transition={{ delay: index * 0.1, duration: 0.5 }}
+            transition={{ delay: index * 0.1, duration: isMobile ? 0.35 : 0.5 }}
             style={{
               flex: "1 1 300px", // Allows cards to grow and shrink beautifully
               maxWidth: 340, // Prevents them from stretching too wide

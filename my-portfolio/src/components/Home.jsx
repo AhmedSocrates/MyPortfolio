@@ -1,5 +1,9 @@
-import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
-import { useRef, useMemo, useEffect } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { useRef, useMemo, useEffect, useState } from "react";
+
+const isMobile =
+  typeof window !== "undefined" &&
+  window.matchMedia("(max-width: 768px)").matches;
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const BG = "#020817";
@@ -36,80 +40,21 @@ const storyChapters = [
   },
 ];
 
-// ─── Particles ────────────────────────────────────────────────────────────────
-// Uses MotionValues so cursor influence never triggers React re-renders.
-function ParticleDot({ dot, mouseX, mouseY }) {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
+// ─── Background Texture ───────────────────────────────────────────────────────
+function BackgroundTexture() {
   return (
-    <motion.div
+    <div
       style={{
         position: "absolute",
-        left: `${dot.x}%`,
-        top: `${dot.y}%`,
-        width: dot.size,
-        height: dot.size,
-        borderRadius: "50%",
-        background: dot.color,
-        x,
-        y,
-      }}
-      animate={{ opacity: [0.05, 0.25, 0.05], scale: [1, 1.6, 1] }}
-      transition={{
-        duration: 6 + Math.random() * 4,
-        repeat: Infinity,
-        ease: "easeInOut",
-        delay: dot.delay,
-      }}
-      onUpdate={() => {
-        const dx = dot.x - mouseX.get();
-        const dy = dot.y - mouseY.get();
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const influence = Math.max(0, 1 - dist / 20);
-        x.set(dx * influence * 2);
-        y.set(dy * influence * 2);
+        inset: 0,
+        backgroundImage:
+          "radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px)",
+        backgroundSize: "24px 24px",
+        opacity: 0.04,
+        pointerEvents: "none",
+        zIndex: 0,
       }}
     />
-  );
-}
-
-function Particles() {
-  const mouseX = useMotionValue(50);
-  const mouseY = useMotionValue(50);
-  const smoothX = useSpring(mouseX, { stiffness: 60, damping: 20 });
-  const smoothY = useSpring(mouseY, { stiffness: 60, damping: 20 });
-
-  useEffect(() => {
-    const onMove = (e) => {
-      mouseX.set((e.clientX / window.innerWidth) * 100);
-      mouseY.set((e.clientY / window.innerHeight) * 100);
-    };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [mouseX, mouseY]);
-
-  const dots = useMemo(
-    () =>
-      Array.from({ length: 55 }, (_, i) => ({
-        id: i,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: Math.random() * 2.5 + 0.6,
-        delay: Math.random() * 5,
-        color: ["#3b82f6", "#a855f7", "#10b981", "#f59e0b"][
-          Math.floor(Math.random() * 4)
-        ],
-      })),
-    []
-  );
-
-  return (
-    <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
-      {dots.map((d) => (
-        <ParticleDot key={d.id} dot={d} mouseX={smoothX} mouseY={smoothY} />
-      ))}
-    </div>
   );
 }
 
@@ -159,8 +104,15 @@ function HorizontalStory() {
   });
 
   const xPx = useTransform(scrollYProgress, [0, 1], [0, -(totalCards - 1) * CARD_WIDTH]);
-  const smoothX = useSpring(xPx, { stiffness: 70, damping: 22, restDelta: 0.001 });
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+  const smoothX = useSpring(xPx, {
+    stiffness: isMobile ? 40 : 70,
+    damping: isMobile ? 30 : 22,
+    restDelta: 0.001
+  });
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: isMobile ? 60 : 100,
+    damping: isMobile ? 40 : 30
+  });
 
   return (
     <div id="about" ref={trackRef} style={{ height: `${totalCards * 100}vh`, position: "relative" }}>
@@ -194,7 +146,7 @@ function Hero() {
   };
   const item = {
     hidden: { opacity: 0, y: 28 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.85, ease: [0.22, 1, 0.36, 1] } },
+    visible: { opacity: 1, y: 0, transition: { duration: isMobile ? 0.45 : 0.85, ease: [0.22, 1, 0.36, 1] } },
   };
 
   const scrollToProjects = () => {
@@ -208,7 +160,7 @@ function Hero() {
 
   return (
     <section style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: BG, position: "relative", overflow: "hidden" }}>
-      <Particles />
+      <BackgroundTexture />
       <motion.div animate={{ scale: [1, 1.35, 1], opacity: [0.07, 0.18, 0.07] }} transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }} style={{ position: "absolute", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, #3b82f6 0%, #a855f7 55%, transparent 100%)", filter: "blur(130px)", zIndex: 0, pointerEvents: "none" }} />
       <motion.div animate={{ scale: [1.2, 1, 1.2], opacity: [0.05, 0.13, 0.05] }} transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 4 }} style={{ position: "absolute", width: 450, height: 450, borderRadius: "50%", background: "radial-gradient(circle, #10b981 0%, transparent 70%)", filter: "blur(100px)", zIndex: 0, pointerEvents: "none", right: "5%", bottom: "10%" }} />
 

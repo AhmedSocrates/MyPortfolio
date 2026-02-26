@@ -1,5 +1,9 @@
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+
+const isMobile =
+    typeof window !== "undefined" &&
+    window.matchMedia("(max-width: 768px)").matches;
 
 const BG = "#020817";
 const EASE = [0.22, 1, 0.36, 1];
@@ -148,7 +152,7 @@ function YearNode({ active, accent }) {
             {active && (
                 <motion.div
                     animate={{ scale: [1, 1.9], opacity: [0.4, 0] }}
-                    transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
+                    transition={{ duration: isMobile ? 1.2 : 1.8, repeat: Infinity, ease: "easeOut" }}
                     style={{
                         position: "absolute",
                         width: 20,
@@ -161,7 +165,7 @@ function YearNode({ active, accent }) {
             {/* Core dot */}
             <motion.div
                 animate={{ scale: active ? 1 : 0.6, opacity: active ? 1 : 0.3 }}
-                transition={{ duration: 0.5, ease: EASE }}
+                transition={{ duration: isMobile ? 0.35 : 0.5, ease: EASE }}
                 style={{
                     width: active ? 12 : 8,
                     height: active ? 12 : 8,
@@ -186,7 +190,7 @@ function ConnectorLine({ accent, active }) {
             <motion.div
                 animate={{ scaleY: active ? 1 : 0, opacity: active ? 1 : 0 }}
                 initial={{ scaleY: 0, opacity: 0 }}
-                transition={{ duration: 0.65, ease: EASE, delay: 0.15 }}
+                transition={{ duration: isMobile ? 0.45 : 0.65, ease: EASE, delay: isMobile ? 0.1 : 0.15 }}
                 style={{
                     position: "absolute",
                     inset: 0,
@@ -205,7 +209,7 @@ function ContentItem({ item, index, accent }) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6 }}
-            transition={{ duration: 0.38, delay: index * 0.07, ease: EASE }}
+            transition={{ duration: isMobile ? 0.25 : 0.38, delay: index * 0.07, ease: EASE }}
             style={{
                 padding: "20px 24px",
                 background: "#0d1526",
@@ -273,7 +277,7 @@ function JourneyRow({ data, index, isLast }) {
                 <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     animate={inView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.08, ease: EASE }}
+                    transition={{ duration: isMobile ? 0.35 : 0.5, delay: index * 0.08, ease: EASE }}
                 >
                     <YearNode active={active} accent={data.accent} />
                 </motion.div>
@@ -288,7 +292,7 @@ function JourneyRow({ data, index, isLast }) {
                     onClick={() => setOpen((v) => !v)}
                     initial={{ opacity: 0, x: -16 }}
                     animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -16 }}
-                    transition={{ duration: 0.55, delay: index * 0.08 + 0.05, ease: EASE }}
+                    transition={{ duration: isMobile ? 0.35 : 0.55, delay: index * 0.08 + 0.05, ease: EASE }}
                     style={{
                         display: "flex",
                         alignItems: "baseline",
@@ -339,7 +343,7 @@ function JourneyRow({ data, index, isLast }) {
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: "auto" }}
                             exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.42, ease: EASE }}
+                            transition={{ duration: isMobile ? 0.3 : 0.42, ease: EASE }}
                             style={{ overflow: "hidden" }}
                         >
                             <div style={{ display: "flex", flexDirection: "column", gap: 12, paddingBottom: 20 }}>
@@ -364,7 +368,7 @@ export default function Journey() {
             <motion.div
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, ease: EASE }}
+                transition={{ duration: isMobile ? 0.45 : 0.7, ease: EASE }}
                 viewport={{ once: true }}
                 style={{ textAlign: "center", marginBottom: 88, padding: "0 24px" }}
             >
