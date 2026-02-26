@@ -2,23 +2,36 @@ import { motion } from "framer-motion";
 
 const serviceData = [
   {
-    title: "Flutter Development",
-    desc: "Building seamless, high-performance, and production-ready cross-platform mobile apps.",
-    icon: "📱",
-    accent: "#38bdf8", // Flutter Sky Blue
+    title: "Software Consultation & System Analysis",
+    desc: "Providing architectural guidance, documentation standards, and system analysis to help individuals, startups, and companies design scalable and maintainable software solutions.",
+    accent: "#38bdf8",
     special: true,
   },
   {
-    title: "Web Platforms",
-    desc: "Architecting responsive, scalable, and user-centric custom websites that drive real business value.",
-    icon: "🌐",
-    accent: "#10b981", // Emerald Green
+    title: "Full-Stack & SaaS Systems",
+    desc: "Designing and building complete software systems — from MVPs to production-grade SaaS platforms — covering frontend, backend, databases, and system integration.",
+    accent: "#10b981",
   },
   {
-    title: "Full-Stack Engineering",
-    desc: "End-to-end software solutions combining rigorous computer science fundamentals with real-world execution.",
-    icon: "⚙️",
-    accent: "#f59e0b", // Amber/Gold
+    title: "Deployment & Integration Services",
+    desc: "Handling deployment pipelines, domain setup, hosting, CI/CD, and third-party integrations to ensure systems are reliable, secure, and production-ready.",
+    accent: "#6366f1",
+  },
+  {
+    title: "AI Agents & Automation",
+    desc: "Building custom AI agents and automation workflows using tools like n8n and modern AI APIs to streamline operations, decision-making, and internal processes.",
+    accent: "#f59e0b",
+    special: true,
+  },
+  {
+    title: "Research Assistance (AI & Quantum)",
+    desc: "Assisting with research, experimentation, and technical documentation in artificial intelligence, machine learning, and quantum computing–related topics.",
+    accent: "#ec4899",
+  },
+  {
+    title: "Career & Technical Branding",
+    desc: "Crafting professional CVs, cover letters, and LinkedIn profiles, along with full career portfolios tailored for software engineers and technical professionals.",
+    accent: "#22c55e",
   },
 ];
 

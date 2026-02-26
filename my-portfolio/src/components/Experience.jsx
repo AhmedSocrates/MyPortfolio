@@ -18,13 +18,24 @@ const EXPERIENCES = [
         company: "WasteCo",
         role: "Web Developer",
         period: "Dec 2025 – Feb 2026",
-        location: "Remote",
+        location: "UAE (Remote)",
         desc: "Designed and delivered a polished company landing page for a waste management firm. Built with React and Vite for blazing-fast load times, Tailwind CSS for responsive design, and integrated a lead-capture form with Formspree.",
         tech: ["React", "TypeScript", "Vite", "Tailwind CSS"],
         accent: "#10b981",
         icon: "♻️",
         current: false,
     },
+    {
+        company: "EtooPlay Information Technology",
+        role: "Software Analyst",
+        period: "Sep 2023 - Mar 2024",
+        location: "Sudan (Remote)",
+        desc: "Analyzed and optimized the full system for a businesses search engine company. Lead a team of combined of front-end and back-end developers. Implemented new features and improved performance.",
+        tech: ["Flutter", "Laravel", "MySQL", "REST APIs"],
+        accent: "#f59e0b",
+        icon: "📱",
+        current: false,
+    }
 ];
 
 function ExperienceCard({ exp, index }) {

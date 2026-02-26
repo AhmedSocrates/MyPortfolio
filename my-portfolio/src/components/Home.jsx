@@ -1,5 +1,5 @@
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { useRef, useMemo } from "react";
+import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
+import { useRef, useMemo, useEffect } from "react";
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const BG = "#020817";
@@ -7,51 +7,99 @@ const BG2 = "#0a0f1e";
 
 const storyChapters = [
   {
-    id: "fullstack",
-    label: "Chapter 01 — The Architect",
-    headline: "Web. Mobile.\nEcosystems.",
-    body: "I build the foundation. From pixel-perfect React frontends to robust, scalable backends. I don't just write code; I engineer seamless, cross-platform experiences that users actually want to interact with.",
+    id: "engineering",
+    label: "Chapter 01 — Foundations",
+    headline: "Engineering\nFrom First Principles.",
+    body: "My journey started with frontend development and competitive programming. I learned to care about structure, clarity, and correctness — understanding how systems behave, not just how they look.",
     accent: "#3b82f6",
-    icon: "📱",
   },
   {
     id: "ai",
-    label: "Chapter 02 — The Intelligence",
-    headline: "Researching\nDeep Learning.",
-    body: "AI isn't just an API call to me. I dive deep into Machine Learning and Deep Learning architectures. I provide dedicated research assistance to build the 'brains' behind complex, data-driven systems.",
+    label: "Chapter 02 — Intelligence",
+    headline: "Learning How\nSystems Think.",
+    body: "I moved into Machine Learning and Deep Learning to understand how intelligence is built, trained, and evaluated. From algorithms to neural architectures, I focus on reasoning, not shortcuts.",
     accent: "#a855f7",
-    icon: "🧠",
   },
   {
-    id: "data",
-    label: "Chapter 03 — The Analyst",
-    headline: "Data Told\nThrough PowerBI.",
-    body: "Raw data is useless without a narrative. I specialize in transforming complex datasets into clear, actionable PowerBI dashboards. I find the signal in the noise and turn numbers into strategic insights.",
+    id: "systems",
+    label: "Chapter 03 — Systems",
+    headline: "From Code\nTo Products.",
+    body: "Backend engineering, networks, and security helped me see the full picture. I design systems that scale, integrate cleanly, and survive real-world constraints — not just demos.",
     accent: "#10b981",
-    icon: "📊",
   },
   {
-    id: "brand",
-    label: "Chapter 04 — The Strategist",
-    headline: "Brands Built\nWith AI Agents.",
-    body: "A great product needs an identity. I bridge the gap by building complete brand strategies powered by custom AI bot assistants. I create digital agents that act as the living, breathing voice of your company.",
+    id: "automation",
+    label: "Chapter 04 — Automation",
+    headline: "Building\nIntelligent Workflows.",
+    body: "I design AI agents and automation pipelines using tools like n8n, APIs, and modern AI models — turning repetitive processes into intelligent, reliable systems.",
     accent: "#f59e0b",
-    icon: "🤖",
   },
 ];
 
 // ─── Particles ────────────────────────────────────────────────────────────────
+// Uses MotionValues so cursor influence never triggers React re-renders.
+function ParticleDot({ dot, mouseX, mouseY }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  return (
+    <motion.div
+      style={{
+        position: "absolute",
+        left: `${dot.x}%`,
+        top: `${dot.y}%`,
+        width: dot.size,
+        height: dot.size,
+        borderRadius: "50%",
+        background: dot.color,
+        x,
+        y,
+      }}
+      animate={{ opacity: [0.05, 0.25, 0.05], scale: [1, 1.6, 1] }}
+      transition={{
+        duration: 6 + Math.random() * 4,
+        repeat: Infinity,
+        ease: "easeInOut",
+        delay: dot.delay,
+      }}
+      onUpdate={() => {
+        const dx = dot.x - mouseX.get();
+        const dy = dot.y - mouseY.get();
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const influence = Math.max(0, 1 - dist / 20);
+        x.set(dx * influence * 2);
+        y.set(dy * influence * 2);
+      }}
+    />
+  );
+}
+
 function Particles() {
+  const mouseX = useMotionValue(50);
+  const mouseY = useMotionValue(50);
+  const smoothX = useSpring(mouseX, { stiffness: 60, damping: 20 });
+  const smoothY = useSpring(mouseY, { stiffness: 60, damping: 20 });
+
+  useEffect(() => {
+    const onMove = (e) => {
+      mouseX.set((e.clientX / window.innerWidth) * 100);
+      mouseY.set((e.clientY / window.innerHeight) * 100);
+    };
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, [mouseX, mouseY]);
+
   const dots = useMemo(
     () =>
       Array.from({ length: 55 }, (_, i) => ({
         id: i,
         x: Math.random() * 100,
         y: Math.random() * 100,
-        size: Math.random() * 2.5 + 0.5,
-        duration: Math.random() * 7 + 4,
+        size: Math.random() * 2.5 + 0.6,
         delay: Math.random() * 5,
-        color: ["#3b82f6", "#a855f7", "#10b981", "#f59e0b"][Math.floor(Math.random() * 4)],
+        color: ["#3b82f6", "#a855f7", "#10b981", "#f59e0b"][
+          Math.floor(Math.random() * 4)
+        ],
       })),
     []
   );
@@ -59,21 +107,7 @@ function Particles() {
   return (
     <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
       {dots.map((d) => (
-        <motion.div
-          key={d.id}
-          style={{
-            position: "absolute",
-            left: `${d.x}%`,
-            top: `${d.y}%`,
-            width: d.size,
-            height: d.size,
-            borderRadius: "50%",
-            background: d.color,
-            opacity: 0.12,
-          }}
-          animate={{ opacity: [0.04, 0.28, 0.04], scale: [1, 1.8, 1] }}
-          transition={{ duration: d.duration, repeat: Infinity, delay: d.delay, ease: "easeInOut" }}
-        />
+        <ParticleDot key={d.id} dot={d} mouseX={smoothX} mouseY={smoothY} />
       ))}
     </div>
   );
