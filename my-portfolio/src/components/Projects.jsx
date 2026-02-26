@@ -1,6 +1,13 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useCallback } from "react";
 
+// ─── Project image imports ────────────────────────────────────────────────────
+import signLinggoImg from "../assets/images/signlinggo-logo.jpg";
+import elevateXImg from "../assets/images/elevatex-logo.jpg";
+import pureLineImg from "../assets/images/Pureline-logo.png";
+import wasteCoImg from "../assets/images/wasteco-logo.jpg";
+import campusQuestImg from "../assets/images/campusquest-logo.jpg";
+
 const EASE = [0.22, 1, 0.36, 1];
 
 // ─── Project data ──────────────────────────────────────────────────────────────
@@ -21,6 +28,7 @@ const PROJECTS = [
         role: "Lead Developer",
         impact: "Largest MY dataset",
         github: "https://github.com/SECJ3104-03/signLinggo",
+        image: signLinggoImg,
     },
     {
         name: "ElevateX",
@@ -38,6 +46,7 @@ const PROJECTS = [
         role: "Lead Developer",
         impact: "2nd · ITMO Hackathon",
         github: "https://github.com/AhmedSocrates/ElevateX",
+        image: elevateXImg,
     },
     {
         name: "PureLine RO",
@@ -55,6 +64,7 @@ const PROJECTS = [
         role: "Software Engineer",
         impact: "Production · UAE",
         github: "https://github.com/AhmedSocrates/PureLine",
+        image: pureLineImg,
     },
     {
         name: "WasteCo",
@@ -72,6 +82,7 @@ const PROJECTS = [
         role: "Web Developer",
         impact: "Production · Live",
         github: "https://github.com/AhmedSocrates/WasteCo",
+        image: wasteCoImg,
     },
     {
         name: "AI Agents & Automation",
@@ -123,6 +134,7 @@ const PROJECTS = [
         role: "Game Developer",
         impact: "Academic Project",
         github: "https://github.com/AhmedSocrates/Mario",
+        image: campusQuestImg,
     },
     {
         name: "Memory Simulator",
@@ -178,8 +190,36 @@ function IconClose({ color = "#64748b" }) {
     );
 }
 
-// ─── Image Placeholder ────────────────────────────────────────────────────────
-function ImagePlaceholder({ accent, name, compact = false }) {
+// ─── Image Placeholder / Renderer ─────────────────────────────────────────────
+function ImagePlaceholder({ accent, name, compact = false, src = null }) {
+    if (src) {
+        return (
+            <div
+                style={{
+                    width: "100%",
+                    height: compact ? 160 : 200,
+                    borderRadius: compact ? 10 : 14,
+                    overflow: "hidden",
+                    border: `1px solid ${accent}40`,
+                    flexShrink: 0,
+                    position: "relative",
+                    background: "#0d1526"
+                }}
+            >
+                <img
+                    src={src}
+                    alt={`${name} screenshot`}
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        display: "block"
+                    }}
+                />
+            </div>
+        );
+    }
+
     return (
         <div
             style={{
@@ -335,9 +375,9 @@ function ProjectModal({ project, onClose }) {
                     </motion.button>
                 </div>
 
-                {/* Image placeholder */}
+                {/* Image placeholder / renderer */}
                 <div style={{ padding: "24px 32px 0" }}>
-                    <ImagePlaceholder accent={project.accent} name={project.name} compact={false} />
+                    <ImagePlaceholder accent={project.accent} name={project.name} src={project.image} compact={false} />
                 </div>
 
                 {/* Body */}
@@ -453,7 +493,7 @@ function ProjectCard({ project, index, onOpen }) {
                 animate={{ opacity: hovered ? 1 : 0.75 }}
                 transition={{ duration: 0.28 }}
             >
-                <ImagePlaceholder accent={project.accent} name={project.name} compact />
+                <ImagePlaceholder accent={project.accent} name={project.name} src={project.image} compact />
             </motion.div>
 
             {/* Card body */}
