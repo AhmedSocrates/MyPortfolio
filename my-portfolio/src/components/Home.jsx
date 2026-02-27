@@ -59,34 +59,34 @@ function BackgroundTexture() {
 }
 
 // ─── Chapter Card ─────────────────────────────────────────────────────────────
+// ─── Chapter Card ─────────────────────────────────────────────────────────────
 function ChapterCard({ chapter }) {
   return (
     <div
       style={{
         flexShrink: 0,
-        width: 600,
-        height: "100%",
+        // Responsive width: Full screen on mobile, 600px on desktop
+        width: isMobile ? "100vw" : 600, 
+        height: isMobile ? "auto" : "100%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        padding: "64px 56px",
+        padding: isMobile ? "80px 32px" : "64px 56px",
         position: "relative",
-        borderRight: "1px solid rgba(255,255,255,0.04)",
+        borderRight: isMobile ? "none" : "1px solid rgba(255,255,255,0.04)",
+        borderBottom: isMobile ? "1px solid rgba(255,255,255,0.04)" : "none",
       }}
     >
       <div style={{ width: 56, height: 3, borderRadius: 9999, background: chapter.accent, marginBottom: 32 }} />
       <span style={{ fontFamily: "monospace", fontSize: 11, letterSpacing: "0.25em", textTransform: "uppercase", color: chapter.accent, opacity: 0.85, marginBottom: 20, display: "block" }}>
         {chapter.label}
       </span>
-      <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 62, fontWeight: 900, color: "#ffffff", lineHeight: 1.05, letterSpacing: "-0.02em", whiteSpace: "pre-line", marginBottom: 28 }}>
+      <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: isMobile ? 42 : 62, fontWeight: 900, color: "#ffffff", lineHeight: 1.05, letterSpacing: "-0.02em", whiteSpace: "pre-line", marginBottom: 28 }}>
         {chapter.headline}
       </h2>
       <p style={{ color: "#94a3b8", fontSize: 17, lineHeight: 1.75, maxWidth: 440, fontFamily: "Georgia, serif" }}>
         {chapter.body}
       </p>
-      <div style={{ position: "absolute", bottom: 48, right: 48, fontSize: 96, opacity: 0.06, pointerEvents: "none", userSelect: "none" }}>
-        {chapter.icon}
-      </div>
     </div>
   );
 }
@@ -103,28 +103,58 @@ function HorizontalStory() {
     offset: ["start start", "end end"],
   });
 
-  const xPx = useTransform(scrollYProgress, [0, 1], [0, -(totalCards - 1) * CARD_WIDTH]);
+  // Calculate X based on isMobile
+  // On mobile, targetX is 0 so the cards don't move horizontally
+  const targetX = isMobile ? 0 : -(totalCards - 1) * CARD_WIDTH;
+  const xPx = useTransform(scrollYProgress, [0, 1], [0, targetX]);
+
   const smoothX = useSpring(xPx, {
     stiffness: isMobile ? 40 : 70,
     damping: isMobile ? 30 : 22,
     restDelta: 0.001
   });
+
   const scaleX = useSpring(scrollYProgress, {
     stiffness: isMobile ? 60 : 100,
     damping: isMobile ? 40 : 30
   });
 
   return (
-    <div id="about" ref={trackRef} style={{ height: `${totalCards * 100}vh`, position: "relative" }}>
-      <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", display: "flex", flexDirection: "column", background: BG2 }}>
-        <motion.div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, zIndex: 50, originX: 0, scaleX, background: "linear-gradient(90deg, #3b82f6 0%, #a855f7 33%, #10b981 66%, #f59e0b 100%)" }} />
+    <div 
+      id="about" 
+      ref={trackRef} 
+      style={{ 
+        // Mobile: normal height | Desktop: 400vh for scroll distance
+        height: isMobile ? "auto" : `${totalCards * 100}vh`, 
+        position: "relative" 
+      }}
+    >
+      <div 
+        style={{ 
+          // Mobile: static | Desktop: sticky
+          position: isMobile ? "relative" : "sticky", 
+          top: 0, 
+          height: isMobile ? "auto" : "100vh", 
+          overflow: "hidden", 
+          display: "flex", 
+          flexDirection: "column", 
+          background: BG2 
+        }}
+      >
+        {/* Progress Bar - Only visible on Desktop */}
+        {!isMobile && (
+          <motion.div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, zIndex: 50, originX: 0, scaleX, background: "linear-gradient(90deg, #3b82f6 0%, #a855f7 33%, #10b981 66%, #f59e0b 100%)" }} />
+        )}
+
         <motion.div
           style={{
             display: "flex",
-            height: "100%",
-            width: "max-content",
-            paddingLeft: `calc(50vw - ${CARD_WIDTH / 2}px)`,
-            paddingRight: `calc(50vw - ${CARD_WIDTH / 2}px)`,
+            // Mobile: stack vertical | Desktop: horizontal
+            flexDirection: isMobile ? "column" : "row",
+            height: isMobile ? "auto" : "100%",
+            width: isMobile ? "100%" : "max-content",
+            paddingLeft: isMobile ? 0 : `calc(50vw - ${CARD_WIDTH / 2}px)`,
+            paddingRight: isMobile ? 0 : `calc(50vw - ${CARD_WIDTH / 2}px)`,
             x: smoothX,
             willChange: "transform",
           }}
