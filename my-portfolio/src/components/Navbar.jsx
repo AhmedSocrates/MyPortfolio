@@ -38,9 +38,7 @@ export default function Navbar() {
           justifyContent: "space-between",
           padding: "0 clamp(20px, 5vw, 60px)",
           height: 64,
-          background: scrolled
-            ? "rgba(2, 8, 23, 0.88)"
-            : "transparent",
+          background: scrolled ? "rgba(2, 8, 23, 0.88)" : "transparent",
           backdropFilter: scrolled ? "blur(18px)" : "none",
           borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "none",
           transition: "background 0.35s ease, backdrop-filter 0.35s ease, border-color 0.35s ease",
@@ -49,23 +47,30 @@ export default function Navbar() {
         {/* Logo */}
         <motion.a
           href="#"
-          onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+          onClick={(e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.97 }}
           style={{
-            fontFamily: "'Playfair Display', Georgia, serif",
-            fontSize: 24,
-            fontWeight: 900,
-            letterSpacing: "-0.02em",
-            background: "linear-gradient(135deg, #3b82f6 0%, #a855f7 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
+            display: "flex",
+            alignItems: "center",
             cursor: "pointer",
             userSelect: "none",
           }}
         >
-          AE
+          <img
+            src="/profile.png" /* Make sure profile.png is directly in your public folder */
+            alt="Ahmed Mohamed"
+            style={{
+              width: 44,
+              height: 44,
+              borderRadius: "50%",
+              objectFit: "cover",
+              border: "2px solid rgba(255,255,255,0.1)",
+            }}
+          />
         </motion.a>
 
         {/* Desktop Links */}
@@ -188,7 +193,10 @@ export default function Navbar() {
             initial={{ opacity: 0, x: 20 }}
             animate={menuOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
             transition={{ delay: i * 0.06 }}
-            onClick={() => { scrollTo(link.href); setMenuOpen(false); }}
+            onClick={() => {
+              scrollTo(link.href);
+              setMenuOpen(false);
+            }}
             style={{
               fontFamily: "'Playfair Display', Georgia, serif",
               fontSize: 28,
