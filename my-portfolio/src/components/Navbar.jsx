@@ -4,6 +4,7 @@ import { useState } from "react";
 const NAV_LINKS = [
   { label: "About", href: "#about" },
   { label: "Journey", href: "#journey" },
+  { label: "Services", href: "#services" },
   { label: "Projects", href: "#projects" },
   { label: "Experience", href: "#experience" },
   { label: "Contact", href: "#contact" },
@@ -148,8 +149,8 @@ export default function Navbar() {
                   ? i === 0
                     ? { rotate: 45, y: 7 }
                     : i === 2
-                    ? { rotate: -45, y: -7 }
-                    : { opacity: 0 }
+                      ? { rotate: -45, y: -7 }
+                      : { opacity: 0 }
                   : { rotate: 0, y: 0, opacity: 1 }
               }
               style={{
