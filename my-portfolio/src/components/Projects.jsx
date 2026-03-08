@@ -32,7 +32,7 @@ const PROJECTS = [
         role: "Lead Developer",
         impact: "Largest MY dataset",
         github: "https://github.com/SECJ3104-03/signLinggo",
-        image: signLinggoImg,
+        images: [signLinggoImg, "/signlinggo-2.png", "/signlinggo-3.png"],
     },
     {
         name: "ElevateX",
@@ -50,7 +50,7 @@ const PROJECTS = [
         role: "Lead Developer",
         impact: "2nd · ITMO Hackathon",
         github: "https://github.com/AhmedSocrates/ElevateX",
-        image: elevateXImg,
+        images: [elevateXImg],
     },
     {
         name: "PureLine RO",
@@ -68,7 +68,7 @@ const PROJECTS = [
         role: "Software Engineer",
         impact: "Production · UAE",
         github: "https://github.com/AhmedSocrates/PureLine",
-        image: pureLineImg,
+        images: [pureLineImg],
     },
     {
         name: "WasteCo",
@@ -86,7 +86,7 @@ const PROJECTS = [
         role: "Web Developer",
         impact: "Production · Live",
         github: "https://github.com/AhmedSocrates/WasteCo",
-        image: wasteCoImg,
+        images: [wasteCoImg],
     },
     {
         name: "AI Agents & Automation",
@@ -138,7 +138,7 @@ const PROJECTS = [
         role: "Game Developer",
         impact: "Academic Project",
         github: "https://github.com/AhmedSocrates/Mario",
-        image: campusQuestImg,
+        images: [campusQuestImg],
     },
     {
         name: "Memory Simulator",
@@ -289,6 +289,168 @@ function ImagePlaceholder({ accent, name, compact = false, src = null }) {
     );
 }
 
+// ─── Image Carousel ───────────────────────────────────────────────────────────
+function ImageCarousel({ images = [], name, accent }) {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [direction, setDirection] = useState(0);
+
+    // If no images, show the placeholder style
+    if (!images || images.length === 0) {
+        return <ImagePlaceholder accent={accent} name={name} compact={false} />;
+    }
+
+    const slideNext = (e) => {
+        if (e) e.stopPropagation();
+        setDirection(1);
+        setCurrentIndex((prev) => (prev + 1) % images.length);
+    };
+
+    const slidePrev = (e) => {
+        if (e) e.stopPropagation();
+        setDirection(-1);
+        setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+    };
+
+    const handleDragEnd = (event, info) => {
+        const swipeThreshold = 50;
+        if (info.offset.x < -swipeThreshold) {
+            slideNext();
+        } else if (info.offset.x > swipeThreshold) {
+            slidePrev();
+        }
+    };
+
+    const variants = {
+        enter: (dir) => ({
+            x: dir > 0 ? 300 : -300,
+            opacity: 0,
+            scale: 0.95,
+        }),
+        center: {
+            x: 0,
+            opacity: 1,
+            scale: 1,
+            transition: { x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } },
+        },
+        exit: (dir) => ({
+            x: dir < 0 ? 300 : -300,
+            opacity: 0,
+            scale: 0.95,
+            transition: { x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } },
+        }),
+    };
+
+    return (
+        <div style={{ position: "relative", width: "100%", aspectRatio: "16/9", overflow: "hidden", borderRadius: 14, border: `1px solid ${accent}40`, background: "#0d1526" }}>
+            <AnimatePresence initial={false} custom={direction}>
+                <motion.img
+                    key={currentIndex}
+                    src={images[currentIndex]}
+                    alt={`${name} screenshot ${currentIndex + 1}`}
+                    custom={direction}
+                    variants={variants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    drag="x"
+                    dragConstraints={{ left: 0, right: 0 }}
+                    dragElastic={1}
+                    onDragEnd={handleDragEnd}
+                    style={{
+                        position: "absolute",
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "contain",
+                        display: "block",
+                        cursor: "grab",
+                        background: "#0a0f1e"
+                    }}
+                    whileTap={{ cursor: "grabbing" }}
+                />
+            </AnimatePresence>
+
+            {/* Navigation Arrows */}
+            {images.length > 1 && (
+                <>
+                    <button
+                        onClick={slidePrev}
+                        style={{
+                            position: "absolute",
+                            left: 10,
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            background: "rgba(0,0,0,0.4)",
+                            backdropFilter: "blur(8px)",
+                            color: "white",
+                            width: 36,
+                            height: 36,
+                            borderRadius: "50%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            border: `1px solid ${accent}40`,
+                            zIndex: 10,
+                            cursor: "pointer",
+                        }}
+                    >
+                        ❮
+                    </button>
+                    <button
+                        onClick={slideNext}
+                        style={{
+                            position: "absolute",
+                            right: 10,
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            background: "rgba(0,0,0,0.4)",
+                            backdropFilter: "blur(8px)",
+                            color: "white",
+                            width: 36,
+                            height: 36,
+                            borderRadius: "50%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            border: `1px solid ${accent}40`,
+                            zIndex: 10,
+                            cursor: "pointer",
+                        }}
+                    >
+                        ❯
+                    </button>
+                </>
+            )}
+
+            {/* Dots Indicator */}
+            {images.length > 1 && (
+                <div style={{ position: "absolute", bottom: 16, left: 0, right: 0, display: "flex", justifyContent: "center", gap: 8, zIndex: 10 }}>
+                    {images.map((_, i) => (
+                        <button
+                            key={i}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setDirection(i > currentIndex ? 1 : -1);
+                                setCurrentIndex(i);
+                            }}
+                            style={{
+                                width: currentIndex === i ? 24 : 8,
+                                height: 8,
+                                borderRadius: 4,
+                                background: currentIndex === i ? accent : "rgba(255,255,255,0.3)",
+                                transition: "all 0.3s ease",
+                                padding: 0,
+                                margin: 0,
+                                border: "none",
+                                cursor: "pointer",
+                            }}
+                        />
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+}
+
 // ─── Project Modal ────────────────────────────────────────────────────────────
 function ProjectModal({ project, onClose }) {
     // Close on ESC
@@ -379,9 +541,13 @@ function ProjectModal({ project, onClose }) {
                     </motion.button>
                 </div>
 
-                {/* Image placeholder / renderer */}
+                {/* Image carousel / placeholder */}
                 <div style={{ padding: "24px 32px 0" }}>
-                    <ImagePlaceholder accent={project.accent} name={project.name} src={project.image} compact={false} />
+                    <ImageCarousel
+                        accent={project.accent}
+                        name={project.name}
+                        images={project.images || (project.image ? [project.image] : [])}
+                    />
                 </div>
 
                 {/* Body */}
@@ -497,7 +663,7 @@ function ProjectCard({ project, index, onOpen }) {
                 animate={{ opacity: hovered ? 1 : 0.75 }}
                 transition={{ duration: 0.28 }}
             >
-                <ImagePlaceholder accent={project.accent} name={project.name} src={project.image} compact />
+                <ImagePlaceholder accent={project.accent} name={project.name} src={project.images?.[0] || project.image} compact />
             </motion.div>
 
             {/* Card body */}
