@@ -1,5 +1,7 @@
 /* ── Reset & Base ──────────────────────────────────────────────────────────── */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -45,6 +47,7 @@ button {
   width: 5px;
   background: #020817;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #1e293b;
   border-radius: 3px;

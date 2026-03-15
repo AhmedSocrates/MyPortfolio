@@ -5,8 +5,8 @@ const isMobile =
     typeof window !== "undefined" &&
     window.matchMedia("(max-width: 768px)").matches;
 
-import pureLineLogo from "../assets/images/Pureline-logo.png";
-import wasteCoLogo from "../assets/images/wasteco-logo.jpg";
+import pureLineLogo from "../assets/images/Pureline/Pureline-logo.png";
+import wasteCoLogo from "../assets/images/Wasteco/wasteco-logo.jpg";
 import etooPlayLogo from "../assets/images/EtooPlay-logo.png";
 
 const BG = "#020817";

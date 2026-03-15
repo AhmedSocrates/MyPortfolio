@@ -6,11 +6,61 @@ const isMobile =
     window.matchMedia("(max-width: 768px)").matches;
 
 // ─── Project image imports ────────────────────────────────────────────────────
-import signLinggoImg from "../assets/images/signlinggo-logo.jpg";
-import elevateXImg from "../assets/images/elevatex-logo.jpg";
-import pureLineImg from "../assets/images/Pureline-logo.png";
-import wasteCoImg from "../assets/images/wasteco-logo.jpg";
-import campusQuestImg from "../assets/images/campusquest-logo.jpg";
+// SignLinggo
+import signLinggoImg from "../assets/images/Signlinggo/signlinggo-logo.jpg";
+import signLinggoScreenshot1 from "../assets/images/Signlinggo/Screenshot 2026-03-09 052723.png";
+import signLinggoScreenshot2 from "../assets/images/Signlinggo/signlinggo-screenshoot2.png";
+import signLinggoScreenshot3 from "../assets/images/Signlinggo/signlinggo-screeshoot3.png";
+import signLinggoScreenshot4 from "../assets/images/Signlinggo/signlinggo-screenshoot4.png";
+import signLinggoScreenshot5 from "../assets/images/Signlinggo/signlinggo-screenshoot5.png";
+
+// ElevateX
+import elevateXImg from "../assets/images/elevatex/elevatex-logo.jpg";
+import elevateXScreenshot1 from "../assets/images/elevatex/elevatex-screenshoot1.png";
+import elevateXScreenshot2 from "../assets/images/elevatex/elevatex-screenshoot2.png";
+import elevateXScreenshot3 from "../assets/images/elevatex/elevatex-screenshoot3.png";
+import elevateXScreenshot4 from "../assets/images/elevatex/elevatex-screenshoot4.png";
+import elevateXScreenshot5 from "../assets/images/elevatex/elevatex-screenshoot5.png";
+
+// PureLine RO
+import pureLineImg from "../assets/images/Pureline/Pureline-logo.png";
+import pureLineScreenshot1 from "../assets/images/Pureline/Pureline-screenshoot1.png";
+import pureLineScreenshot2 from "../assets/images/Pureline/Pureline-screenshoot2.png";
+import pureLineScreenshot3 from "../assets/images/Pureline/Pureline-screenshoot3.png";
+
+// WasteCo
+import wasteCoImg from "../assets/images/Wasteco/wasteco-logo.jpg";
+import wasteCoScreenshot1 from "../assets/images/Wasteco/wasteco-screenshoots1.png";
+import wasteCoScreenshot2 from "../assets/images/Wasteco/wasteco-screenshoots2.png";
+import wasteCoScreenshot3 from "../assets/images/Wasteco/wasteco-screenshoots3.png";
+import wasteCoScreenshot4 from "../assets/images/Wasteco/wasteco-screenshoots4.png";
+
+// CampusQuest
+import campusQuestImg from "../assets/images/campus-quest/campusquest-logo.jpg";
+import campusQuestScreenshot1 from "../assets/images/campus-quest/campusquest-screenshoots1.png";
+import campusQuestScreenshot2 from "../assets/images/campus-quest/campusquest-screenshoots2.png";
+import campusQuestScreenshot3 from "../assets/images/campus-quest/campusquest-screenshoots3.png";
+import campusQuestScreenshot4 from "../assets/images/campus-quest/campusquest-screenshoots4.png";
+
+// NileCare
+import nileCareImg from "../assets/images/Nilecare/Nilecare-logo.png";
+import nileCareScreenshot2 from "../assets/images/Nilecare/Nilecare-screenshoot2.png";
+import nileCareScreenshot3 from "../assets/images/Nilecare/Nilecare-screenshoot3.png";
+import nileCareScreenshot4 from "../assets/images/Nilecare/Nilecare-screenshoot4.png";
+
+// AI Agents
+import aiAgentsImg from "../assets/images/AI-agents/AIagent-logo.png";
+
+// Memory Simulator
+import memoryScreenshot1 from "../assets/images/Memory/Memory-screenshoots1.png";
+import memoryScreenshot2 from "../assets/images/Memory/Memory-screenshoots2.png";
+import memoryScreenshot3 from "../assets/images/Memory/Memory-screenshoots3.png";
+import memoryScreenshot4 from "../assets/images/Memory/Memory-screenshoots4.png";
+
+// Flappy Ahmed
+import flappyAhmedImg from "../assets/images/FlappyAhmed/FlappyAhmed-logo.png";
+import flappyAhmedScreenshot1 from "../assets/images/FlappyAhmed/FlappyAhmed-screenshoot1.png";
+import flappyAhmedScreenshot2 from "../assets/images/FlappyAhmed/FlappyAhmed-screenshoot2.png";
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -32,7 +82,7 @@ const PROJECTS = [
         role: "Lead Developer",
         impact: "Largest MY dataset",
         github: "https://github.com/SECJ3104-03/signLinggo",
-        images: [signLinggoImg, "/signlinggo-2.png", "/signlinggo-3.png"],
+        images: [signLinggoImg, signLinggoScreenshot1, signLinggoScreenshot2, signLinggoScreenshot3, signLinggoScreenshot4, signLinggoScreenshot5],
     },
     {
         name: "ElevateX",
@@ -50,7 +100,7 @@ const PROJECTS = [
         role: "Lead Developer",
         impact: "2nd · ITMO Hackathon",
         github: "https://github.com/AhmedSocrates/ElevateX",
-        images: [elevateXImg],
+        images: [elevateXImg, elevateXScreenshot1, elevateXScreenshot2, elevateXScreenshot3, elevateXScreenshot4, elevateXScreenshot5],
     },
     {
         name: "PureLine RO",
@@ -68,7 +118,7 @@ const PROJECTS = [
         role: "Software Engineer",
         impact: "Production · UAE",
         github: "https://github.com/AhmedSocrates/PureLine",
-        images: [pureLineImg],
+        images: [pureLineImg, pureLineScreenshot1, pureLineScreenshot2, pureLineScreenshot3],
     },
     {
         name: "WasteCo",
@@ -84,9 +134,9 @@ const PROJECTS = [
         accent: "#10b981",
         featured: false,
         role: "Web Developer",
-        impact: "Production · Live",
+        impact: "Production · Live Link: wasteco.ae",
         github: "https://github.com/AhmedSocrates/WasteCo",
-        images: [wasteCoImg],
+        images: [wasteCoImg, wasteCoScreenshot1, wasteCoScreenshot2, wasteCoScreenshot3, wasteCoScreenshot4],
     },
     {
         name: "AI Agents & Automation",
@@ -104,6 +154,7 @@ const PROJECTS = [
         role: "AI Engineer",
         impact: "Client Deployments",
         github: null,
+        images: [aiAgentsImg],
     },
     {
         name: "NileCare",
@@ -121,6 +172,7 @@ const PROJECTS = [
         role: "Full-Stack Dev",
         impact: "Student Platform",
         github: null,
+        images: [nileCareImg, nileCareScreenshot2, nileCareScreenshot3, nileCareScreenshot4],
     },
     {
         name: "CampusQuest",
@@ -138,7 +190,7 @@ const PROJECTS = [
         role: "Game Developer",
         impact: "Academic Project",
         github: "https://github.com/AhmedSocrates/Mario",
-        images: [campusQuestImg],
+        images: [campusQuestImg, campusQuestScreenshot1, campusQuestScreenshot2, campusQuestScreenshot3, campusQuestScreenshot4],
     },
     {
         name: "Memory Simulator",
@@ -156,6 +208,7 @@ const PROJECTS = [
         role: "Systems Dev",
         impact: "Educational Tool",
         github: "https://github.com/AhmedSocrates/Memory-Management",
+        images: [memoryScreenshot1, memoryScreenshot2, memoryScreenshot3, memoryScreenshot4],
     },
     {
         name: "Flappy Ahmed",
@@ -173,6 +226,7 @@ const PROJECTS = [
         role: "Game Developer",
         impact: "Creative Build",
         github: null,
+        images: [flappyAhmedImg, flappyAhmedScreenshot1, flappyAhmedScreenshot2],
     },
 ];
 
@@ -630,7 +684,6 @@ function ProjectModal({ project, onClose }) {
         </motion.div>
     );
 }
-
 // ─── Project Card ─────────────────────────────────────────────────────────────
 function ProjectCard({ project, index, onOpen }) {
     const [hovered, setHovered] = useState(false);
