@@ -14,7 +14,7 @@ const BG = "#020817";
 const EXPERIENCES = [
     {
         company: "PureLine RO Water Solutions",
-        role: "Software Engineer, B2B Specialist",
+        role: "Software Engineer, Full Stack",
         period: "Sep 2025 – Present",
         location: "UAE (Remote)",
         desc: "Architected and built a full-scale MERN e-commerce platform for a water solutions company in the UAE. The system handles product catalog, order management, and client portals — production-grade with real customers.",
